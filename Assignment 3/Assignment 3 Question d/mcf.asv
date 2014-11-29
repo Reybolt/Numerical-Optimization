@@ -1,0 +1,31 @@
+function [D,L] = mcf(A,delta,beta)
+    
+    n = size(A,1);
+    c = 
+    D = zeros(n,n);
+    L = zeros(n,n);
+    for i = 1:n
+        L(i,i) = 1;
+    end
+    
+    for j = 1:n
+        for i  = j:n
+            temp = 0;
+            for s = 1:(j-1)
+                temp = temp + D(s,s)*L(i,s)*L(j,s);
+            end
+            c(i,j) = A(i,j) - temp;
+        end
+        if j<n
+            theta(j) = max(abs(c(j+1:n,j)));
+            D(j,j) = max([ abs(c(j,j)) , (theta(j)/beta)^2  ,  delta ]);
+        else
+            D(n,n) = max([ abs(c(n,n)) , delta]);
+        end
+        
+        for i = (j+1):n
+            L(i,j) = c(i,j)/D(j,j);
+        end
+        
+    end
+    
